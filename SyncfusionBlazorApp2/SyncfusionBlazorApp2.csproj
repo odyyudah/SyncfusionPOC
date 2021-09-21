@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+	<BlazorWebAssemblyEnableLinking>false</BlazorWebAssemblyEnableLinking>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\ComboBoxFeatures.razor" />
+    <Content Remove="Pages\DataGridFeatures.razor" />
+    <Content Remove="Pages\McDermottGrid.razor" />
+    <Content Remove="Pages\MenuBarFeatures.razor" />
+    <Content Remove="Pages\SidebarFeatures.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.10" PrivateAssets="all" />
+    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+	    <PackageReference Include="Syncfusion.Blazor.Grid" Version="19.2.0.62" />
+    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="19.2.0.62" />
+    <PackageReference Include="Syncfusion.Blazor.Navigations" Version="19.2.0.62" /> 
+  </ItemGroup>
+
+  <ItemGroup>
+    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+  
+  
+
+</Project>
