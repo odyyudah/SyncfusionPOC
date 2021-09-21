@@ -1,0 +1,125 @@
+﻿@page "/McDermottGrid2"
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.DropDowns
+
+<SfComboBox TValue="string" TItem="Country" Placeholder="Select a country" DataSource="@countries">
+    <ComboBoxFieldSettings Value="ID" Text="Text"></ComboBoxFieldSettings>
+</SfComboBox>
+
+<SfComboBox TValue="string" TItem="ShipCountry" Placeholder="Select a shipCountry" DataSource="@shipCountries">
+    <ComboBoxFieldSettings Value="ID" Text="Text"></ComboBoxFieldSettings>
+</SfComboBox>
+
+<SfGrid DataSource="@Employees" AllowSelection="true" AllowPaging="true">
+    <GridSelectionSettings CheckboxOnly="true" PersistSelection="true" Type="SelectionType.Multiple"></GridSelectionSettings>
+    <GridPageSettings PageSizes="true" PageCount="5" PageSize="3"></GridPageSettings>
+    <GridTemplates>
+        <DetailTemplate>
+            @{
+                var employee = (context as EmployeeData);
+                        <SfGrid DataSource="@Orders" Query="@(new Query().Where("EmployeeID", "equal", employee.EmployeeID))"
+                                AllowSelection="true">
+                            <GridSelectionSettings CheckboxOnly="true" PersistSelection="true" Type="SelectionType.Multiple"></GridSelectionSettings>
+                            <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+                            <GridColumns>
+                                <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+                                <GridColumn Field=@nameof(Order.OrderID) HeaderText="OrderID" Width="110" IsPrimaryKey="true"> </GridColumn>
+                                <GridColumn Field=@nameof(Order.CustomerName) HeaderText="Customer Name" Width="110" AllowEditing="false" ></GridColumn>
+                                <GridColumn Field=@nameof(Order.ShipCountry) HeaderText="Ship Country" Width="110"></GridColumn>
+                                <GridColumn Field=@nameof(Order.OrderPercentage) EditType="EditType.NumericEdit" Format="p" HeaderText="Percentage" Width="110"></GridColumn>
+
+                            </GridColumns>
+                        </SfGrid>
+            }
+        </DetailTemplate>
+    </GridTemplates>
+    <GridColumns>
+        <GridColumn Type="ColumnType.CheckBox" Width="50"></GridColumn>
+        <GridColumn Field=@nameof(EmployeeData.EmployeeID) HeaderText="EmployeeID" Width="110" IsPrimaryKey="true"> </GridColumn>
+
+        <GridColumn Field=@nameof(EmployeeData.FirstName) HeaderText="First Name" Width="110"> </GridColumn>
+        <GridColumn Field=@nameof(EmployeeData.LastName) HeaderText="Last Name" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(EmployeeData.Title) HeaderText="Title" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(EmployeeData.Country) HeaderText="Country" Width="110"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+@code{
+
+    List<EmployeeData> Employees = new List<EmployeeData>
+{
+        new EmployeeData() {EmployeeID = 1001, FirstName="Nancy", LastName="Fuller", Title="Sales Representative", Country="USA"},
+        new EmployeeData() {EmployeeID = 1002, FirstName="Andrew", LastName="Davolio", Title="Vice President", Country="UK"},
+        new EmployeeData() {EmployeeID = 1003, FirstName="Janet", LastName="Leverling", Title="Sales", Country="UK"},
+        new EmployeeData() {EmployeeID = 1004, FirstName="Margaret", LastName="Peacock", Title="Sales Manager", Country="UAE"},
+        new EmployeeData() {EmployeeID = 1005, FirstName="Steven", LastName="Buchanan", Title="Inside Sales Coordinator", Country="USA"},
+        new EmployeeData() {EmployeeID = 1006, FirstName="Smith", LastName="Steven", Title="HR Manager", Country="UAE"},
+    };
+
+    List<Order> Orders = new List<Order> {
+        new Order() {EmployeeID = 1001, OrderID=001, CustomerName="Nancy", ShipCountry="USA", OrderPercentage = 80},
+        new Order() {EmployeeID = 1001, OrderID=002, CustomerName="Steven", ShipCountry="UK", OrderPercentage = 80},
+        new Order() {EmployeeID = 1002, OrderID=003, CustomerName="Smith", ShipCountry="UK", OrderPercentage = 80},
+        new Order() {EmployeeID = 1002, OrderID=004, CustomerName="Smith", ShipCountry="USA", OrderPercentage = 80},
+        new Order() {EmployeeID = 1003, OrderID=005, CustomerName="Nancy", ShipCountry="ITA", OrderPercentage = 80},
+        new Order() {EmployeeID = 1003, OrderID=006, CustomerName="Nancy", ShipCountry="UK", OrderPercentage = 80},
+        new Order() {EmployeeID = 1003, OrderID=007, CustomerName="Steven", ShipCountry="GER", OrderPercentage = 80},
+        new Order() {EmployeeID = 1004, OrderID=008, CustomerName="Andrew", ShipCountry="GER", OrderPercentage = 80},
+        new Order() {EmployeeID = 1005, OrderID=009, CustomerName="Fuller", ShipCountry="USA", OrderPercentage = 80},
+        new Order() {EmployeeID = 1006, OrderID=010, CustomerName="Leverling", ShipCountry="UAE", OrderPercentage = 80},
+        new Order() {EmployeeID = 1006, OrderID=011, CustomerName="Margaret", ShipCountry="KEN", OrderPercentage = 80},
+        new Order() {EmployeeID = 1007, OrderID=012, CustomerName="Buchanan", ShipCountry="GER", OrderPercentage = 80},
+        new Order() {EmployeeID = 1008, OrderID=013, CustomerName="Nancy", ShipCountry="USA", OrderPercentage = 80},
+        new Order() {EmployeeID = 1006, OrderID=014, CustomerName="Andrew", ShipCountry="UAE", OrderPercentage = 80},
+    };
+
+    public class EmployeeData
+    {
+        public int? EmployeeID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Title { get; set; }
+        public string Country { get; set; }
+
+    }
+
+    public class Order
+    {
+        public int? EmployeeID { get; set; }
+        public int? OrderID { get; set; }
+        public string CustomerName { get; set; }
+        public string ShipCountry { get; set; }
+        public double OrderPercentage { get; set; }
+    }
+
+    public class Country
+    {
+        public string ID { get; set; }
+        public string Text { get; set; }
+    }
+
+    public class ShipCountry
+    {
+        public string ID { get; set; }
+        public string Text { get; set; }
+
+    }
+
+    List<Country> countries = new List<Country>()
+    {
+        new Country() { ID = "USA", Text = "USA" },
+        new Country() { ID = "UK", Text = "UK" },
+        new Country() { ID = "UAE", Text = "UAE" }
+    };
+
+    List<ShipCountry> shipCountries = new List<ShipCountry>()
+    {
+        new ShipCountry() { ID = "USA", Text = "USA" },
+        new ShipCountry() { ID = "UK", Text = "UK" },
+        new ShipCountry() { ID = "UAE", Text = "UAE" },
+        new ShipCountry() { ID = "UAE", Text = "GER" }
+
+    };
+
+}
